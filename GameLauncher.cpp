@@ -106,6 +106,15 @@ INT_PTR CALLBACK MessageHandler(HWND dialogHandle, UINT message, WPARAM wParam, 
 
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLine*/, int /*nCmdShow*/)
 {
+	// Create a named mutex to check if the launcher has not been launched multiple times
+	HANDLE mutexHandle = CreateMutex(NULL, TRUE, L"DefenceForceGameLauncherMutex");
+	if (GetLastError() == ERROR_ALREADY_EXISTS)
+	{
+		// Mutex already exists, another instance is running
+		MessageBox(NULL, L"Another Game Launcher instance is already running.", L"Encounter Launcher", MB_OK | MB_ICONEXCLAMATION);
+		return 0; // Exit the application
+	}
+
 #if 0
 	{
 		// Poor man's unit tests
@@ -131,6 +140,9 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /
 	}
 
 	DialogBox(hInstance, MAKEINTRESOURCE(IDD_LAUNCHER), 0, MessageHandler);
+
+	ReleaseMutex(mutexHandle);
+	CloseHandle(mutexHandle);
 	return 0;
 };
 
