@@ -1,0 +1,12 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/GameLauncher
+/GameLauncher/x64
+/PDB
+/x64
+/GameLauncher.vcxproj.filters
+/GameLauncher.vcxproj.user
+/steam_appid.txt
+*.txt
