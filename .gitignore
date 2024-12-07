@@ -2,7 +2,7 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs/GameLauncher
+/.vs/*
 /GameLauncher/x64
 /PDB
 /x64
