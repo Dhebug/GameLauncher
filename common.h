@@ -17,10 +17,11 @@
 #include <tchar.h>
 #include <atomic>
 #include <thread>
-#include<cassert>
+#include <cassert>
 
 #include <windows.h>
-#include <Shlwapi.h>	// Include this header for PathRemoveFileSpec and PathAppend
+#include <shellapi.h>   // For ShellExecute
+#include <Shlwapi.h>	// For PathRemoveFileSpec and PathAppend
 #include <ShlObj.h>     // For SHGetFolderPath
 #include <process.h>	// For _beginthreadex
 #include <tchar.h>
@@ -61,6 +62,15 @@ extern bool g_EmulatorWasLaunchedAndHasStopped; ///< To detect if we want to qui
 const TCHAR* GetSaveFolderPath();            ///< C:\Users\<username>\AppData\Local\EncounterByDefenceForce
 const TCHAR* GetIniFilePath();               ///< C:\Users\<username>\AppData\Local\EncounterByDefenceForce\GameLauncherSettings.ini
 const TCHAR* GetDskSaveSlotFilePath();       ///< C:\Users\<username>\AppData\Local\EncounterByDefenceForce\DskSaveSlotFile.bin
+
+enum Hyperlink
+{
+	HyperlinkGamePage,
+	HyperlinkManual,
+	HyperlinkSupport
+};
+
+const TCHAR* GetHyperlink(Hyperlink linkType);
 
 void SaveEmulatorPosition(const RECT& rect);
 bool LoadEmulatorPosition(RECT& rect);

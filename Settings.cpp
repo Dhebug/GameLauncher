@@ -6,6 +6,45 @@
 #include "resource.h"
 
 
+const TCHAR* GetHyperlink(Hyperlink linkType)
+{
+	static std::wstring link;
+
+	switch (linkType)
+	{
+	case HyperlinkGamePage:
+		link = L"https://www.defence-force.org/index.php?page=games&game=encounter";
+		if (IsDlgButtonChecked(g_DialogHandle, IDC_RADIO_French) == BST_CHECKED)
+		{
+			link.append(L"&language=fr");
+		}
+		break;
+
+	case HyperlinkManual:
+		link = L"https://www.defence-force.org/index.php?page=games&game=encounter&type=manual";
+		if (IsDlgButtonChecked(g_DialogHandle, IDC_RADIO_French) == BST_CHECKED)
+		{
+			link.append(L"&language=fr");
+		}
+		break;
+
+	case HyperlinkSupport:
+		if (IsDlgButtonChecked(g_DialogHandle, IDC_RADIO_French) == BST_CHECKED)
+		{
+			// French
+			link = L"mailto::encounter@defence-force.org?subject=Problème%20avec%20Encouner&body=Mon%20problème...";
+		}
+		else
+		{
+			// English
+			link = L"mailto::encounter_support@defence-force.org?subject=Issue%20with%20Encounter&body=My%20issue...";
+		}
+		break;
+	}
+	return link.data();
+}
+
+
 
 const TCHAR* GetSaveFolderPath()
 {
@@ -246,6 +285,10 @@ void SetDialogLanguage(HWND hDlg)
 		{ IDC_CHECK_AUTO_MINIMIZE, IDS_CHECK_AUTO_MINIMIZE},
 		{ IDC_CHECK_QUIT_WHEN_DONE, IDS_CHECK_QUIT_WHEN_DONE},
 		{ IDC_CHECK_REMEMBER_POSITIONS, IDS_CHECK_REMEMBER_POSITIONS},
+
+		{ IDC_LINK_HOMEPAGE, IDS_LINK_HOMEPAGE },
+		{ IDC_LINK_MANUAL, IDS_LINK_MANUAL},
+		{ IDC_LINK_SUPPORT, IDS_LINK_SUPPORT},
 
 		{ ID_LAUNCH_STOP, IDS_LAUNCH},
 		{ ID_QUIT, IDS_QUIT}

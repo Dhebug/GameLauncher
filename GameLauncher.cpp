@@ -4,14 +4,42 @@
 #include "resource.h"
 
 #pragma comment(lib, "Shlwapi.lib")
-
+#pragma comment(lib, "Comctl32.lib")
 
 
 HWND g_DialogHandle = 0;                  ///< Handle of the Launcher dialog
 
 
 
-INT_PTR CALLBACK MessageHandler(HWND dialogHandle, UINT message, WPARAM wParam, LPARAM /*lParam*/)
+LRESULT CALLBACK StaticControlWithCustomCursor(HWND handle, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR, DWORD_PTR)
+{
+	switch (uMsg)
+	{
+	case WM_SETCURSOR:
+	{
+		// Because IDC_HAND is not available on all operating systems, we will load the arrow cursor if IDC_HAND is not present.
+		HCURSOR cursorHandle = LoadCursor(NULL, IDC_HAND);
+		if (!cursorHandle)
+		{
+			cursorHandle = LoadCursor(NULL, IDC_ARROW);
+		}
+		SetCursor(cursorHandle);
+		return TRUE;
+	}
+	break;
+
+	case WM_NCDESTROY:
+		RemoveWindowSubclass(handle, StaticControlWithCustomCursor, 0);
+		// fall through
+	default:
+		return DefSubclassProc(handle, uMsg, wParam, lParam);
+	}
+}
+
+
+
+
+INT_PTR CALLBACK MessageHandler(HWND dialogHandle, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
@@ -64,8 +92,31 @@ INT_PTR CALLBACK MessageHandler(HWND dialogHandle, UINT message, WPARAM wParam, 
 
 			// Set initial dialog caption and button caption
 			UpdateDialogRunStopStatus(dialogHandle, false);
+
+			// If we want to control the shape of the mouse cursor when it hovers on specific items, we need to subclass and have a custom message handler for these elements
+			SetWindowSubclass(GetDlgItem(dialogHandle, IDC_LINK_HOMEPAGE), StaticControlWithCustomCursor, 0, 0);
+			SetWindowSubclass(GetDlgItem(dialogHandle, IDC_LINK_MANUAL), StaticControlWithCustomCursor, 0, 0);
+			SetWindowSubclass(GetDlgItem(dialogHandle, IDC_LINK_SUPPORT), StaticControlWithCustomCursor, 0, 0);
+
 		}
 		return (INT_PTR)TRUE;
+
+	case WM_CTLCOLORSTATIC:
+	{
+		// Set the colour of the text for our URL (at the dialog creation, cannot be changed later with this method)
+		// See: https://stackoverflow.com/questions/1525669/set-static-text-color-win32
+		// https://docs.microsoft.com/en-us/windows/desktop/Controls/wm-ctlcolorstatic
+		if ( ((HWND)lParam == GetDlgItem(dialogHandle, IDC_LINK_HOMEPAGE)) ||
+			 ((HWND)lParam == GetDlgItem(dialogHandle, IDC_LINK_MANUAL)) ||
+			 ((HWND)lParam == GetDlgItem(dialogHandle, IDC_LINK_SUPPORT)))
+		{
+			HDC dc = (HDC)wParam;
+			SetBkMode(dc, TRANSPARENT);
+			SetTextColor(dc, RGB(0, 0, 255));
+			return (INT_PTR)GetSysColorBrush(COLOR_MENU);   // By returning a system brush, we don't have to bother with releasing or leaking a brush
+		}
+		break;
+	}
 
 	case WM_MOVE:
 	case WM_SIZE:
@@ -93,6 +144,18 @@ INT_PTR CALLBACK MessageHandler(HWND dialogHandle, UINT message, WPARAM wParam, 
 
 			case ID_LAUNCH_STOP:
 				return LaunchStopClicked(dialogHandle);
+
+			case IDC_LINK_HOMEPAGE:  // Open the game homepage
+				ShellExecute(dialogHandle, L"open", GetHyperlink(HyperlinkGamePage), 0, 0, SW_SHOWNORMAL);
+				return TRUE;
+
+			case IDC_LINK_MANUAL:   // Open the game user manual
+				ShellExecute(dialogHandle, L"open", GetHyperlink(HyperlinkManual), 0, 0, SW_SHOWNORMAL);
+				return TRUE;
+
+			case IDC_LINK_SUPPORT:  // Open a email link
+				ShellExecute(dialogHandle, L"open", GetHyperlink(HyperlinkSupport), 0, 0, SW_SHOWNORMAL);
+				return TRUE;
 			}
 		}
 		break;
