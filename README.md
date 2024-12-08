@@ -8,4 +8,17 @@ A quickly hacked launcher for the Steam version of Encounter
           Modified the achievement handling to reset achievements of older game versions
 1.0.0.3 - Added hyperlinks to open the homepage, manual and support emails
 
+# Updating the build in Steam
+- Prepare and upload the new build with either SteamCMD or the SteamPipe Build Uploader
+- Log on https://partner.steamgames.com/dashboard
+- Select the game in Recent Apps
+- Go to Technical Tools -> Edit Steamworks Settings (https://partner.steamgames.com/apps/view/3319780)
+- Select SteamPipe -> Builds (https://partner.steamgames.com/apps/builds/3319780)
+- Select the uploaded build and change the build menu to "default" and click on "Preview Build"
+- Eventually add a comment and click on Set Build Live Now
+- At that point the build is now on Steam and available to all the users
 
+# Creating new events
+- Go to "Community & Moderation" -> Post/Manage events (https://steamcommunity.com/games/3319780/partnerevents/)
+- Make sure to have English and French event pictures
+- 
