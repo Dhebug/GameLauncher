@@ -32,12 +32,12 @@ const TCHAR* GetHyperlink(Hyperlink linkType)
 		if (IsDlgButtonChecked(g_DialogHandle, IDC_RADIO_French) == BST_CHECKED)
 		{
 			// French
-			link = L"mailto::encounter@defence-force.org?subject=Problème%20avec%20Encouner&body=Mon%20problème...";
+			link = L"mailto:encounter@defence-force.org?subject=Problème%20avec%20Encouner&body=Mon%20problème...";
 		}
 		else
 		{
 			// English
-			link = L"mailto::encounter_support@defence-force.org?subject=Issue%20with%20Encounter&body=My%20issue...";
+			link = L"mailto:encounter_support@defence-force.org?subject=Issue%20with%20Encounter&body=My%20issue...";
 		}
 		break;
 	}
@@ -96,18 +96,21 @@ void SaveRectPosition(const TCHAR* sectionName, const RECT& rect)
 {
 	const TCHAR* iniFilePath(GetIniFilePath());
 
-	// Convert RECT values to strings
-	TCHAR left[16], top[16], right[16], bottom[16];
-	_stprintf_s(left, _T("%d"), rect.left);
-	_stprintf_s(top, _T("%d"), rect.top);
-	_stprintf_s(right, _T("%d"), rect.right);
-	_stprintf_s(bottom, _T("%d"), rect.bottom);
+	if (rect.left != -32000)
+	{
+		// Convert RECT values to strings
+		TCHAR left[16], top[16], right[16], bottom[16];
+		_stprintf_s(left, _T("%d"), rect.left);
+		_stprintf_s(top, _T("%d"), rect.top);
+		_stprintf_s(right, _T("%d"), rect.right);
+		_stprintf_s(bottom, _T("%d"), rect.bottom);
 
-	// Write the window position to the INI file
-	WritePrivateProfileString(sectionName, _T("WindowPositionLeft"), left, iniFilePath);
-	WritePrivateProfileString(sectionName, _T("WindowPositionTop"), top, iniFilePath);
-	WritePrivateProfileString(sectionName, _T("WindowPositionRight"), right, iniFilePath);
-	WritePrivateProfileString(sectionName, _T("WindowPositionBottom"), bottom, iniFilePath);
+		// Write the window position to the INI file
+		WritePrivateProfileString(sectionName, _T("WindowPositionLeft"), left, iniFilePath);
+		WritePrivateProfileString(sectionName, _T("WindowPositionTop"), top, iniFilePath);
+		WritePrivateProfileString(sectionName, _T("WindowPositionRight"), right, iniFilePath);
+		WritePrivateProfileString(sectionName, _T("WindowPositionBottom"), bottom, iniFilePath);
+	}
 }
 
 bool LoadRectPosition(const TCHAR* sectionName,RECT& rect)
@@ -120,8 +123,8 @@ bool LoadRectPosition(const TCHAR* sectionName,RECT& rect)
 	int right  = GetPrivateProfileInt(sectionName, _T("WindowPositionRight"), -1, iniFilePath);
 	int bottom = GetPrivateProfileInt(sectionName, _T("WindowPositionBottom"), -1, iniFilePath);
 
-	// Check if the values are different from the default values
-	if (left == -1 || top == -1 || right == -1 || bottom == -1)
+	// Check if the values are different from the default values or values that are not valid
+	if (left == -32000 || left == -1 || top == -1 || right == -1 || bottom == -1)
 	{
 		return false; // No existing position found
 	}
