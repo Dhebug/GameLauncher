@@ -14,7 +14,9 @@ A quickly hacked launcher for the Steam version of Encounter
 - 1.0.0.4
   - Support email should not have two : after the mailto  
   - German layout should be QWERTZ, not QWERTYZ  
-  - Fixed (I hope) the problem with the minimized window that cannot be restored  
+  - Fixed (I hope) the problem with the minimized window that cannot be restored
+- 1.0.0.5
+  - Fixed a number of typos in French
 
 # Updating the build in Steam
 - Prepare and upload the new build with either SteamCMD or the SteamPipe Build Uploader
