@@ -60,6 +60,14 @@ unsigned __stdcall MonitorWindowPosition(void* /*pArguments*/)
 	} 
 	while (!g_EmulatorWindowHandle && (counter--));
 
+	// Change the emulator title from "Oricutron 1.2" to "Encounter"
+	SetWindowText(g_EmulatorWindowHandle, _T("Encounter"));
+
+	// Replace the default "Oric" icon by the Encounter one
+	HICON iconHandle = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_GAMELAUNCHER));
+	SendMessage(g_EmulatorWindowHandle, WM_SETICON, ICON_BIG, (LPARAM)iconHandle);
+	SendMessage(g_EmulatorWindowHandle, WM_SETICON, ICON_SMALL, (LPARAM)iconHandle);
+
 	RECT rect;
 	if (LoadEmulatorPosition(rect) && (IsDlgButtonChecked(g_DialogHandle, IDC_CHECK_REMEMBER_POSITIONS) == BST_CHECKED))
 	{
@@ -76,6 +84,10 @@ unsigned __stdcall MonitorWindowPosition(void* /*pArguments*/)
 		}
 		Sleep(1000); // Check every second
 	}
+
+	// Destroy the icon handle
+	DestroyIcon(iconHandle);
+
 	OutputDebugStringA("MonitorWindowPosition thread stopped\n");
 	return 0;
 }

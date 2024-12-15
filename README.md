@@ -17,6 +17,8 @@ A quickly hacked launcher for the Steam version of Encounter
   - Fixed (I hope) the problem with the minimized window that cannot be restored
 - 1.0.0.5
   - Fixed a number of typos in French
+- 1.0.0.6
+  - The emulator application now appears with "Encounter" as title and icon instead of the default "Oricutron 1.2" and default Oric icon
 
 # Updating the build in Steam
 - Prepare and upload the new build with either SteamCMD or the SteamPipe Build Uploader
@@ -31,4 +33,12 @@ A quickly hacked launcher for the Steam version of Encounter
 # Creating new events
 - Go to "Community & Moderation" -> Post/Manage events (https://steamcommunity.com/games/3319780/partnerevents/)
 - Make sure to have English and French event pictures
-- 
+
+# Accessing the user settings
+- Open %LOCALAPPDATA%\EncounterByDefenceForce
+
+# Clearing achievements
+- Open the steam console with steam://open/console
+- Reset a single achievement: achievement_clear 3319780 <achievement name> 
+- Reset all achievements: reset_all_stats 3319780 
+
