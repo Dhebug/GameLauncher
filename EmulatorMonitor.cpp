@@ -61,7 +61,7 @@ unsigned __stdcall MonitorWindowPosition(void* /*pArguments*/)
 	while (!g_EmulatorWindowHandle && (counter--));
 
 	// Change the emulator title from "Oricutron 1.2" to "Encounter"
-	SetWindowText(g_EmulatorWindowHandle, _T("Encounter"));
+	SetWindowText(g_EmulatorWindowHandle, _T("Encounter - Oricutron Emulator"));
 
 	// Replace the default "Oric" icon by the Encounter one
 	HICON iconHandle = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_GAMELAUNCHER));
@@ -180,7 +180,9 @@ void CheckDskTime(FILETIME& referenceTime)
 		{
 			OutputDebugStringA("DSK file slot extracted\n");
 			SaveSaveSlotFile(saveFile);
+#ifdef STEAM_LAUNCHER
 			SteamManager::SetOricAchievements(saveFile.achievements);
+#endif
 		}
 	}
 }
@@ -262,9 +264,9 @@ INT_PTR LaunchStopClicked(HWND hDlg)
 
 			// Start the file monitoring thread
 			CreateThread(NULL, 0, MonitorFileChanges, NULL, 0, NULL);
-
+#ifdef STEAM_LAUNCHER
 			SteamManager::SetAchievement(STEAMACH_WELCOME);
-
+#endif
 			// Minimize the window if the option is checked
 			if (IsDlgButtonChecked(hDlg, IDC_CHECK_AUTO_MINIMIZE) == BST_CHECKED)
 			{

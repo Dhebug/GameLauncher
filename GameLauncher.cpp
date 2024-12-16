@@ -196,11 +196,13 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /
 	}
 #endif
 
+#ifdef STEAM_LAUNCHER
 	SteamManager steamManager;
 	if (!steamManager.Initialize())
 	{
 		return EXIT_FAILURE;
 	}
+#endif // STEAM_LAUNCHER
 
 	DialogBox(hInstance, MAKEINTRESOURCE(IDD_LAUNCHER), 0, MessageHandler);
 

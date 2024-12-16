@@ -189,6 +189,8 @@ void TerminateEmulator();
 bool IsEmulatorRunning();
 
 
+#ifdef STEAM_LAUNCHER
+
 //
 // Steam
 // See: https://partner.steamgames.com/doc/features/achievements/ach_guide
@@ -383,4 +385,5 @@ public:
 	std::thread         m_UpdateThread;
 };
 
+#endif // STEAM_LAUNCHER
 

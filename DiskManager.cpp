@@ -190,7 +190,9 @@ void PatchDskFile(HWND hDlg)
 			{
 				// Ignore the player existing save file and overwrite it with the DSK one
 				userSaveFile = dskSaveFile;
+#ifdef STEAM_LAUNCHER
 				SteamManager::ClearAllAchievements();
+#endif
 			}
 		}
 

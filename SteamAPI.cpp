@@ -1,4 +1,6 @@
 
+#ifdef STEAM_LAUNCHER
+
 #include "common.h"
 
 
@@ -260,4 +262,6 @@ bool SteamManager::ClearAllAchievements()
 {
 	return g_SteamAchievements ? g_SteamAchievements->ClearAllAchievements() : false;
 }
+
+#endif // STEAM_LAUNCHER
 
