@@ -1,4 +1,4 @@
-# GameLauncher
+﻿# GameLauncher
 A quickly hacked launcher for the Steam version of Encounter
 
 # Change history
@@ -20,7 +20,8 @@ A quickly hacked launcher for the Steam version of Encounter
 - 1.0.0.6
   - The emulator application now appears with "Encounter" as title and icon instead of the default "Oricutron 1.2" and default Oric icon
 
-# Updating the build in Steam
+# Steam 
+## Updating the build in Steam
 - Prepare and upload the new build with either SteamCMD or the SteamPipe Build Uploader
 - Log on https://partner.steamgames.com/dashboard
 - Select the game in Recent Apps
@@ -30,15 +31,103 @@ A quickly hacked launcher for the Steam version of Encounter
 - Eventually add a comment and click on Set Build Live Now
 - At that point the build is now on Steam and available to all the users
 
-# Creating new events
+## Creating new events
 - Go to "Community & Moderation" -> Post/Manage events (https://steamcommunity.com/games/3319780/partnerevents/)
 - Make sure to have English and French event pictures
 
-# Accessing the user settings
+## Accessing the user settings
 - Open %LOCALAPPDATA%\EncounterByDefenceForce
 
-# Clearing achievements
+## Clearing achievements
 - Open the steam console with steam://open/console
 - Reset a single achievement: achievement_clear 3319780 <achievement name> 
 - Reset all achievements: reset_all_stats 3319780 
+
+
+# Itch.io
+Game builds can be uploaded to itch manually or automatically using Butler.
+
+The itch game page for Encounter is https://defenceforce.itch.io/encounter
+
+
+## Using Butler.
+Documentation for Butler can be found there: https://itch.io/docs/butler/
+
+## Pushing builds with butler
+See: https://itch.io/docs/butler/pushing.html
+
+The only command that you need to remember is butler push
+```
+butler push directory user/game:channel
+```
+Where:
+
+- directory is what you want to upload. It can also be a .zip file.  
+- user/game is the project you're uploading  
+  - for example: finji/overland for https://finji.itch.io/overland — all lower-case  
+- channel is which slot you're uploading it to
+  - for example: windows-beta, osx-bonus, linux-universal, or soundtrack
+	
+*Channel names will determine the initial set of tags of a slot, but you can always fix them later.*
+
+
+Example for Encounter:
+```
+C:\Users\Mike\AppData\Roaming\itch\apps\butler\butler push C:\Projects\Encounter\ItchIoContent defenceforce/encounter:windows
+
+
+      ..........................
+    ':cccclooooolcccccloooooocccc:,.
+  ':cccccooooooolccccccooooooolccccc,.
+ ,;;;;;;cllllllc:;;;;;;clllllll:;;;;;;.
+ ,,,,,,,;cccccc;,,,,,,,,cccccc:,,,,,,,.
+ .',,,'..':cc:,...,,,'...;cc:,...',,'.
+   .,;:dxl;,;;cxdc,,,;okl;,,,:odc,,,.
+   ,kkkkkx:'..'okkkkkkxxo'...;oxxxxx,
+   ,kkkk:       ...''...       ,dxxx,
+   ,kkk:          .:c'          'xxx;
+   ,kko         .,ccc:;.         :xx;
+   ,kx.         .,;;,,'..         cl'
+   ,kc           .''''.           'l'
+   ,x.       ..............       .l'
+   ,x'      ,oddddddddoolcc,      .l'
+   'xo,...;ldxxxxxxxdollllllc;...'cl'
+   .:ccc:ccccccccc:;;;;;;;;;;;;;;;;,.
+
+
+Welcome to the itch.io command-line tools!
+If it hasn't already, open the following link in your browser to authenticate:
+https://itch.io/user/oauth?client_id=butler&redirect_uri=http%3A%2F%2F127.0.0.1%3A55591%2Foauth%2Fcallback&response_type=token&scope=wharf
+
+(To copy text in cmd.exe: Alt+Space, Edit->Mark, select text, press Enter)
+
+If you're running this on a remote server, the redirect will fail to load.
+In that case, copy the address you're redirected to, paste it below, and press enter.
+
+Authenticated successfully! Saving key in C:\Users\Mike\.config\itch\butler_creds...
+
+∙ For channel `windows`: pushing first build
+∙ Pushing 3.55 MiB (54 files, 9 dirs, 0 symlinks)
+√ Added 3.55 MiB fresh data
+√ 1.53 MiB patch (57.08% savings)
+∙ Build is now processing, should be up in a bit.
+
+Use the `butler status defenceforce/encounter:windows` for more information.
+```
+then the status can be checked:
+```
+C:\Users\Mike\AppData\Roaming\itch\apps\butler\butler status defenceforce/encounter:windows
+
++---------+-----------+------------+---------+
+| CHANNEL |  UPLOAD   |   BUILD    | VERSION |
++---------+-----------+------------+---------+
+| windows | #12273292 | √ #1143390 |       1 |
++---------+-----------+------------+---------+
+
+```
+
+which should also print a notification in the itch launcher and website:
+
+> Today   
+> NEWBuild windows 1 for Encounter HD (Oric) is now live 1m
 
