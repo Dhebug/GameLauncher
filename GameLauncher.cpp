@@ -98,6 +98,12 @@ INT_PTR CALLBACK MessageHandler(HWND dialogHandle, UINT message, WPARAM wParam, 
 			SetWindowSubclass(GetDlgItem(dialogHandle, IDC_LINK_MANUAL), StaticControlWithCustomCursor, 0, 0);
 			SetWindowSubclass(GetDlgItem(dialogHandle, IDC_LINK_SUPPORT), StaticControlWithCustomCursor, 0, 0);
 
+#ifdef STEAM_LAUNCHER
+			if (!g_SteamManager.Initialize())
+			{
+				//return EXIT_FAILURE;
+			}
+#endif
 		}
 		return (INT_PTR)TRUE;
 
@@ -195,14 +201,6 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /
 		isOk &= (v091 < v100);
 	}
 #endif
-
-#ifdef STEAM_LAUNCHER
-	SteamManager steamManager;
-	if (!steamManager.Initialize())
-	{
-		return EXIT_FAILURE;
-	}
-#endif // STEAM_LAUNCHER
 
 	DialogBox(hInstance, MAKEINTRESOURCE(IDD_LAUNCHER), 0, MessageHandler);
 

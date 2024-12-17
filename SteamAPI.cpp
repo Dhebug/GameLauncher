@@ -2,11 +2,13 @@
 #ifdef STEAM_LAUNCHER
 
 #include "common.h"
+#include "resource.h"
 
 
 
 // Global access to Achievements object
 SteamAchievements* g_SteamAchievements = NULL;
+SteamManager	   g_SteamManager;
 
 
 
@@ -51,7 +53,7 @@ bool SteamAchievements::SetAchievement(Achievements achievement)
 	{
 		if (achievement < m_Achievements.size())
 		{
-			SteamUserStats()->SetAchievement(m_Achievements[achievement].m_pchAchievementID);
+			SteamUserStats()->SetAchievement(m_Achievements[achievement].m_ApiId);
 			return SteamUserStats()->StoreStats();
 		}
 
@@ -83,10 +85,10 @@ bool SteamAchievements::SetOricAchievements(uint8_t achievements[ACHIEVEMENT_BYT
 			{
 				if ( (entry + _FIRST_ORIC_ACHIEVEMENT_) < m_Achievements.size())
 				{
-					if (!achievementPtr->m_bAchieved)
+					if (!achievementPtr->m_Achieved)
 					{
-						SteamUserStats()->SetAchievement(achievementPtr->m_pchAchievementID);
-						achievementPtr->m_bAchieved = true;
+						SteamUserStats()->SetAchievement(achievementPtr->m_ApiId);
+						achievementPtr->m_Achieved = true;
 						needStore = true;
 					}
 				}
@@ -114,7 +116,7 @@ bool SteamAchievements::ClearAllAchievements()
 		Achievement* achievementPtr(&m_Achievements[_FIRST_ORIC_ACHIEVEMENT_]);
 		for (int entry = 0; entry < ACHIEVEMENT_COUNT_; entry++)
 		{
-			SteamUserStats()->ClearAchievement(achievementPtr->m_pchAchievementID);
+			SteamUserStats()->ClearAchievement(achievementPtr->m_ApiId);
 			++achievementPtr;
 		}
 		bool isOk=SteamUserStats()->StoreStats();
@@ -209,9 +211,9 @@ bool SteamManager::Initialize()
 		OutputDebugStringA(errMsg);
 		OutputDebugStringA("\n");
 
-		// Handle initialization failure
-		MessageBox(0, TEXT("Failed initializing the Steam PI"), TEXT("Error"), MB_OK | MB_ICONERROR);
-		return EXIT_FAILURE;
+		// Handle initialization failure	
+		MessageBox(0, GetLocalizedString(IDS_STEAM_INIT_FAILED), TEXT("Steam"), MB_OK | MB_ICONINFORMATION);
+		return false;
 	}
 
 	g_SteamAchievements = new SteamAchievements();

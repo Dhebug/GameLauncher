@@ -11,6 +11,7 @@
 #define IDS_WindowedMode                106
 #define IDI_GAMELAUNCHER                107
 #define IDS_FullScreenMode              107
+#define IDS_STEAM_INIT_FAILED           108
 #define IDC_GAMELAUNCHER                109
 #define IDS_FullCrtFilter               110
 #define IDS_NoFilter                    111

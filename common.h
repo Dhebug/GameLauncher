@@ -84,6 +84,7 @@ void LoadSettings(HWND hDlg, bool loadDefault);
 void UpdateDialogRunStopStatus(HWND hDlg, bool isRunning);
 void SetDialogLanguage(HWND hDlg);
 
+const TCHAR* GetLocalizedString(int stringId);
 
 //
 // Disk Manager
@@ -263,22 +264,22 @@ enum Achievements
 	,STEAMACH_READ_TOMBSTONE
 };
 
-#define _ACH_ID( id, name ) { 1+id, #id, name }
+#define _ACH_ID( id, name ) { 1+id, false, #id,  name }
 struct Achievement
 {
 	void GetSteamStatus()
 	{
-		SteamUserStats()->GetAchievement(m_pchAchievementID, &m_bAchieved);
-		_snprintf(m_rgchName, sizeof(m_rgchName), "%s", SteamUserStats()->GetAchievementDisplayAttribute(m_pchAchievementID, "name"));
-		_snprintf(m_rgchDescription, sizeof(m_rgchDescription), "%s", SteamUserStats()->GetAchievementDisplayAttribute(m_pchAchievementID, "desc"));
+		SteamUserStats()->GetAchievement(m_ApiId, &m_Achieved);
+		_snprintf(m_Name, sizeof(m_Name), "%s", SteamUserStats()->GetAchievementDisplayAttribute(m_ApiId, "name"));
+		_snprintf(m_Description, sizeof(m_Description), "%s", SteamUserStats()->GetAchievementDisplayAttribute(m_ApiId, "desc"));
 
 	}
 
-	int m_eAchievementID;
-	const char* m_pchAchievementID;
-	char m_rgchName[128];
-	char m_rgchDescription[256] = "";
-	bool m_bAchieved = false;
+	int m_EnumId;
+	bool m_Achieved = false;
+	const char* m_ApiId;
+	char m_Name[128];
+	char m_Description[256] = "";
 };
 
 
@@ -384,6 +385,8 @@ public:
 	std::atomic<bool>	m_ThreadRunning = true;
 	std::thread         m_UpdateThread;
 };
+
+extern SteamManager	   g_SteamManager;
 
 #endif // STEAM_LAUNCHER
 

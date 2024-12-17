@@ -19,6 +19,7 @@ A quickly hacked launcher for the Steam version of Encounter
   - Fixed a number of typos in French
 - 1.0.0.6
   - The emulator application now appears with "Encounter" as title and icon instead of the default "Oricutron 1.2" and default Oric icon
+  - Changed the initialization of Steam so the error messages appear localized in English or French depending of the user settings
 
 # Steam 
 ## Updating the build in Steam
