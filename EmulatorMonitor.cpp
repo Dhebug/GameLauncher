@@ -49,13 +49,13 @@ unsigned __stdcall MonitorWindowPosition(void* /*pArguments*/)
 	g_EmulatorWindowHandle = 0;
 
 	// Find the window
-	int counter = 10;
+	int counter = 20;
 	do 
 	{
 		EnumWindows(EnumWindowsProc, NULL);
 		if (!g_EmulatorWindowHandle)
 		{
-			Sleep(100);
+			Sleep(500);
 		}
 	} 
 	while (!g_EmulatorWindowHandle && (counter--));
@@ -230,8 +230,11 @@ INT_PTR LaunchStopClicked(HWND hDlg)
 		// Set the current directory to the executable's directory
 		SetCurrentDirectory(szPath);
 
-		//PathAppend(szPath, TEXT("oricutron.exe"));
+#if 0   // Requires the new version of ORICUTRON
 		PathAppend(szPath, TEXT("oricutron-sdl2.exe"));
+#else
+		PathAppend(szPath, TEXT("oricutron.exe"));
+#endif
 
 		// Build the command line parameters
 		if (IsDlgButtonChecked(hDlg, IDC_RADIO_FullscreenMode) == BST_CHECKED)
@@ -246,11 +249,12 @@ INT_PTR LaunchStopClicked(HWND hDlg)
 		{
 			_tcscat_s(szPath, TEXT(" --scanlines on"));
 		}
+#if 0   // Requires the new version of ORICUTRON
 		if (IsDlgButtonChecked(hDlg, IDC_CHECK_STATUS_BAR) != BST_CHECKED)
 		{
 			_tcscat_s(szPath, TEXT(" --statusbar none"));
 		}
-		
+#endif		
 
 		_tcscat_s(szPath, TEXT(" \"")); // Open quotes
 		_tcscat_s(szPath, g_DskFilePath); // Use the resolved file name

@@ -23,6 +23,10 @@ A quickly hacked launcher for the Steam version of Encounter
 - 1.0.0.7
   - Updated the Oricutron version to the latest build
   - Added a checkbox to enable or disable the status bar
+- 1.0.0.8
+  - Reverted to the previous Oricutron
+  - Removed the status bar checkbox
+  - Extended the search for window handle
 
 # Steam 
 ## Updating the build in Steam
