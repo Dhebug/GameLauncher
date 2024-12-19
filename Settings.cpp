@@ -174,6 +174,7 @@ void WriteSettings(HWND hDlg)
 	WritePrivateProfileString(_T("Settings"), _T("AutoMinimize"), IsDlgButtonChecked(hDlg, IDC_CHECK_AUTO_MINIMIZE) == BST_CHECKED ? _T("Enabled") : _T("Disabled"), iniFilePath);
 	WritePrivateProfileString(_T("Settings"), _T("AutoQuit"), IsDlgButtonChecked(hDlg, IDC_CHECK_QUIT_WHEN_DONE) == BST_CHECKED ? _T("Enabled") : _T("Disabled"), iniFilePath);
 	WritePrivateProfileString(_T("Settings"), _T("RememberPositions"), IsDlgButtonChecked(hDlg, IDC_CHECK_REMEMBER_POSITIONS) == BST_CHECKED ? _T("Enabled") : _T("Disabled"), iniFilePath);
+	WritePrivateProfileString(_T("Settings"), _T("EnableStatusBar"), IsDlgButtonChecked(hDlg, IDC_CHECK_STATUS_BAR) == BST_CHECKED ? _T("Enabled") : _T("Disabled"), iniFilePath);
 }
 
 
@@ -209,6 +210,9 @@ void LoadSettings(HWND hDlg,bool loadDefault)
 
 	GetPrivateProfileString(_T("Settings"), _T("RememberPositions"), _T("Enabled"), buffer, sizeof(buffer) / sizeof(buffer[0]), iniFilePath);
 	CheckDlgButton(hDlg, IDC_CHECK_REMEMBER_POSITIONS, _tcscmp(buffer, _T("Enabled")) == 0 ? BST_CHECKED : BST_UNCHECKED);
+
+	GetPrivateProfileString(_T("Settings"), _T("EnableStatusBar"), _T("Disabled"), buffer, sizeof(buffer) / sizeof(buffer[0]), iniFilePath);
+	CheckDlgButton(hDlg, IDC_CHECK_STATUS_BAR, _tcscmp(buffer, _T("Enabled")) == 0 ? BST_CHECKED : BST_UNCHECKED);
 
 	SetDialogLanguage(hDlg);
 }
@@ -292,6 +296,9 @@ void SetDialogLanguage(HWND hDlg)
 		{ IDC_LINK_HOMEPAGE, IDS_LINK_HOMEPAGE },
 		{ IDC_LINK_MANUAL, IDS_LINK_MANUAL},
 		{ IDC_LINK_SUPPORT, IDS_LINK_SUPPORT},
+
+		{ IDC_MISC, IDS_MISC },
+		{ IDC_CHECK_STATUS_BAR, IDS_CHECK_STATUS_BAR},
 
 		{ ID_LAUNCH_STOP, IDS_LAUNCH},
 		{ ID_QUIT, IDS_QUIT}

@@ -230,7 +230,8 @@ INT_PTR LaunchStopClicked(HWND hDlg)
 		// Set the current directory to the executable's directory
 		SetCurrentDirectory(szPath);
 
-		PathAppend(szPath, TEXT("oricutron.exe"));
+		//PathAppend(szPath, TEXT("oricutron.exe"));
+		PathAppend(szPath, TEXT("oricutron-sdl2.exe"));
 
 		// Build the command line parameters
 		if (IsDlgButtonChecked(hDlg, IDC_RADIO_FullscreenMode) == BST_CHECKED)
@@ -245,6 +246,11 @@ INT_PTR LaunchStopClicked(HWND hDlg)
 		{
 			_tcscat_s(szPath, TEXT(" --scanlines on"));
 		}
+		if (IsDlgButtonChecked(hDlg, IDC_CHECK_STATUS_BAR) != BST_CHECKED)
+		{
+			_tcscat_s(szPath, TEXT(" --statusbar none"));
+		}
+		
 
 		_tcscat_s(szPath, TEXT(" \"")); // Open quotes
 		_tcscat_s(szPath, g_DskFilePath); // Use the resolved file name

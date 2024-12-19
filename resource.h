@@ -18,10 +18,12 @@
 #define IDS_CrtFilter                   112
 #define IDS_QUIT                        113
 #define IDS_LAUNCH                      114
+#define IDS_MISC                        115
 #define IDS_FILTERS                     116
 #define IDS_Language                    117
 #define IDS_DISPLAY                     118
 #define IDD_LAUNCHER                    119
+#define IDS_CHECK_STATUS_BAR            119
 #define IDB_ENCOUNTER_LOGO              129
 #define IDS_KEYBOARD_LAYOUT             130
 #define IDS_RADIO_LayoutQwerty          131
@@ -67,6 +69,8 @@
 #define IDC_LINK_MANUAL                 1025
 #define IDC_LINK_HOMEPAGE3              1026
 #define IDC_LINK_SUPPORT                1026
+#define IDC_MISC                        1027
+#define IDC_CHECK_STATUS_BAR            1028
 #define IDC_STATIC                      -1
 
 // Next default values for new objects

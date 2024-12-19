@@ -20,6 +20,9 @@ A quickly hacked launcher for the Steam version of Encounter
 - 1.0.0.6
   - The emulator application now appears with "Encounter" as title and icon instead of the default "Oricutron 1.2" and default Oric icon
   - Changed the initialization of Steam so the error messages appear localized in English or French depending of the user settings
+- 1.0.0.7
+  - Updated the Oricutron version to the latest build
+  - Added a checkbox to enable or disable the status bar
 
 # Steam 
 ## Updating the build in Steam
