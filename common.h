@@ -109,8 +109,8 @@ namespace dsk_file
 #define KEYBOARD_AZERTY 1
 #define KEYBOARD_QWERTZ 2
 
-#define	ACHIEVEMENT_COUNT_ 				48      //  Can't have more than 48 achievements
-#define ACHIEVEMENT_BYTE_COUNT           6
+#define	ACHIEVEMENT_COUNT_ 				50      
+#define ACHIEVEMENT_BYTE_COUNT           7    //  Can't have more than 56 achievements
 #define SCORE_COUNT  24
 
 #pragma pack(push, 1)
@@ -156,8 +156,10 @@ struct SaveGameFile
 	uint8_t start_marker[8];
 	Version file_version;          // 1.2.3
 	ScoreEntry scores[SCORE_COUNT];   // 18*24=432
-	uint8_t achievements[ACHIEVEMENT_BYTE_COUNT];     // Enough for 6*8=48 achievements
-	uint8_t free_data[56 - 4 - ACHIEVEMENT_BYTE_COUNT - 8 - 5 - 8];
+	uint8_t achievements[ACHIEVEMENT_BYTE_COUNT];     // Enough for 7*8=56 achievements
+	uint8_t free_data[56 - 4 - ACHIEVEMENT_BYTE_COUNT - 8 - 5 - 8 - 2 - 2];
+	uint16_t  monkey_king_score_fast;
+	uint16_t  monkey_king_score_slow;
 	uint8_t keyboard_layout;
 	uint8_t music_enabled;
 	uint8_t sound_enabled;
@@ -262,6 +264,9 @@ enum Achievements
 	,STEAMACH_CLOSED_THE_FRIDGE
 	,STEAMACH_READ_INVOICE
 	,STEAMACH_READ_TOMBSTONE
+	// 48 to 50
+	,STEAMACH_OVER_9999
+	,STEAMACH_MONKEY_FALL
 };
 
 #define _ACH_ID( id, name ) { 1+id, false, #id,  name }
@@ -360,6 +365,9 @@ private:
 		,_ACH_ID(STEAMACH_CLOSED_THE_FRIDGE , "Closed the fridge")
 		,_ACH_ID(STEAMACH_READ_INVOICE , "Read the invoice")
 		,_ACH_ID(STEAMACH_READ_TOMBSTONE , "Inspected the tombstone")
+		// 48 to 50
+		,_ACH_ID(STEAMACH_OVER_9999		, "Broke the leaderboard")
+		,_ACH_ID(STEAMACH_MONKEY_FALL , "Made the bully fall")
 	};
 };
 

@@ -29,6 +29,14 @@ A quickly hacked launcher for the Steam version of Encounter
   - Extended the search for window handle
 
 # Steam 
+The main game and the demo have different AppID:
+- Main Game
+  - AppID:   3319780  -> https://partner.steamgames.com/apps/builds/3319780
+  - DepotID: 3319781
+- Demo:
+  - AppID:   3476830  -> https://partner.steamgames.com/apps/builds/3476830
+  - DepotID: 3476831
+ 
 ## Updating the build in Steam
 - Prepare and upload the new build with either SteamCMD or the SteamPipe Build Uploader
 - Log on https://partner.steamgames.com/dashboard
@@ -43,10 +51,16 @@ A quickly hacked launcher for the Steam version of Encounter
 - Go to "Community & Moderation" -> Post/Manage events (https://steamcommunity.com/games/3319780/partnerevents/)
 - Make sure to have English and French event pictures
 
+## Setting the price
+- https://partner.steamgames.com/pricing/dashboard/293994
+
 ## Accessing the user settings
 - Open %LOCALAPPDATA%\EncounterByDefenceForce
 
-## Clearing achievements
+## Achievements
+Achievements can be created and edited on https://partner.steamgames.com/apps/achievements/3319780
+
+Clearing achievements
 - Open the steam console with steam://open/console
 - Reset a single achievement: achievement_clear 3319780 <achievement name> 
 - Reset all achievements: reset_all_stats 3319780 
@@ -81,7 +95,21 @@ Where:
 
 Example for Encounter:
 ```
-C:\Users\Mike\AppData\Roaming\itch\apps\butler\butler push C:\Projects\Encounter\ItchIoContent defenceforce/encounter:windows
+cd C:\Users\Mike\AppData\Roaming\itch\apps\butler
+
+:: Push the main version of the game and check the status
+butler push C:\Projects\Encounter\ItchIoContent defenceforce/encounter:windows
+butler status defenceforce/encounter:windows
+
+:: Push the demo version of the game and check the status
+butler push C:\Projects\Encounter\ItchIoContent defenceforce/encounter:windows_demo
+butler status defenceforce/encounter:windows_demo
+```
+
+In details.
+```
+cd C:\Users\Mike\AppData\Roaming\itch\apps\butler
+butler push C:\Projects\Encounter\ItchIoContent defenceforce/encounter:windows
 
 
       ..........................
@@ -124,7 +152,8 @@ Use the `butler status defenceforce/encounter:windows` for more information.
 ```
 then the status can be checked:
 ```
-C:\Users\Mike\AppData\Roaming\itch\apps\butler\butler status defenceforce/encounter:windows
+cd C:\Users\Mike\AppData\Roaming\itch\apps\butler
+butler status defenceforce/encounter:windows
 
 +---------+-----------+------------+---------+
 | CHANNEL |  UPLOAD   |   BUILD    | VERSION |

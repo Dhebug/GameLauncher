@@ -18,7 +18,7 @@ void SetDiskLanguage(const TCHAR* languagePrefix)
 
 	// Get a pointer to the zero terminator
 	auto pathLength = lstrlen(g_DskFilePath);
-	_stprintf_s(g_DskFilePath + pathLength, MAX_PATH - pathLength, _T("EncounterHD-%s-v*.dsk"), languagePrefix);
+	_stprintf_s(g_DskFilePath + pathLength, MAX_PATH - pathLength, _T("EncounterHD-%s-*.dsk"), languagePrefix);
 
 
 	WIN32_FIND_DATA findFileData;
