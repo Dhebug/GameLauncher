@@ -31,8 +31,14 @@ const TCHAR* GetHyperlink(Hyperlink linkType)
 	case HyperlinkSupport:
 		if (IsDlgButtonChecked(g_DialogHandle, IDC_RADIO_French) == BST_CHECKED)
 		{
-			// French
-			link = L"mailto:encounter@defence-force.org?subject=Problème%20avec%20Encouner&body=Mon%20problème...";
+			// French  (Ã¨ = U+00E8 â†’ UTF-8 %C3%A8)
+			link = L"mailto:encounter@defence-force.org?subject=Probl%C3%A8me%20avec%20Encounter&body=Mon%20probl%C3%A8me...";
+		}
+		else 
+		if (IsDlgButtonChecked(g_DialogHandle, IDC_RADIO_Norwegian) == BST_CHECKED)
+		{
+			// Norwegian
+			link = L"mailto:encounter_support@defence-force.org?subject=Problem%20med%20Encounter&body=Mitt%20problem...";
 		}
 		else
 		{
@@ -167,7 +173,7 @@ void WriteSettings(HWND hDlg)
 	const TCHAR* iniFilePath(GetIniFilePath());
 	WritePrivateProfileString(_T("Settings"), _T("WindowMode"), IsDlgButtonChecked(hDlg, IDC_RADIO_WindowedMode) == BST_CHECKED ? _T("Windowed") : _T("Fullscreen"), iniFilePath);
 	WritePrivateProfileString(_T("Settings"), _T("Filter"), IsDlgButtonChecked(hDlg, IDC_RADIO_NoFilter) == BST_CHECKED ? _T("NoFilter") : IsDlgButtonChecked(hDlg, IDC_RADIO_CrtFilter) == BST_CHECKED ? _T("CrtFilter") : _T("FullCrtFilter"), iniFilePath);
-	WritePrivateProfileString(_T("Settings"), _T("Language"), IsDlgButtonChecked(hDlg, IDC_RADIO_English) == BST_CHECKED ? _T("English") : _T("French"), iniFilePath);
+	WritePrivateProfileString(_T("Settings"), _T("Language"), IsDlgButtonChecked(hDlg, IDC_RADIO_English) == BST_CHECKED ? _T("English") : IsDlgButtonChecked(hDlg, IDC_RADIO_Norwegian) == BST_CHECKED ? _T("Norwegian") : _T("French"), iniFilePath);
 	WritePrivateProfileString(_T("Settings"), _T("KeyboardLayout"), IsDlgButtonChecked(hDlg, IDC_RADIO_LayoutQwerty) == BST_CHECKED ? _T("Qwerty") : IsDlgButtonChecked(hDlg, IDC_RADIO_LayoutQwertz) == BST_CHECKED ? _T("Qwertz") : _T("Azerty"), iniFilePath);
 	WritePrivateProfileString(_T("Settings"), _T("Music"), IsDlgButtonChecked(hDlg, IDC_CHECK_MUSIC) == BST_CHECKED ? _T("Enabled") : _T("Disabled"), iniFilePath);
 	WritePrivateProfileString(_T("Settings"), _T("Sounds"), IsDlgButtonChecked(hDlg, IDC_CHECK_SOUNDS) == BST_CHECKED ? _T("Enabled") : _T("Disabled"), iniFilePath);
@@ -191,7 +197,7 @@ void LoadSettings(HWND hDlg,bool loadDefault)
 	CheckRadioButton(hDlg, IDC_RADIO_NoFilter, IDC_RADIO_FullCrtFilter, _tcscmp(buffer, _T("NoFilter")) == 0 ? IDC_RADIO_NoFilter : _tcscmp(buffer, _T("CrtFilter")) == 0 ? IDC_RADIO_CrtFilter : IDC_RADIO_FullCrtFilter);
 
 	GetPrivateProfileString(_T("Settings"), _T("Language"), _T("English"), buffer, sizeof(buffer) / sizeof(buffer[0]), iniFilePath);
-	CheckRadioButton(hDlg, IDC_RADIO_English, IDC_RADIO_French, _tcscmp(buffer, _T("English")) == 0 ? IDC_RADIO_English : IDC_RADIO_French);
+	CheckRadioButton(hDlg, IDC_RADIO_English, IDC_RADIO_Norwegian, _tcscmp(buffer, _T("English")) == 0 ? IDC_RADIO_English : _tcscmp(buffer, _T("Norwegian")) == 0 ? IDC_RADIO_Norwegian : IDC_RADIO_French);
 
 	GetPrivateProfileString(_T("Settings"), _T("KeyboardLayout"), _T("Qwerty"), buffer, sizeof(buffer) / sizeof(buffer[0]), iniFilePath);
 	CheckRadioButton(hDlg, IDC_RADIO_LayoutQwerty, IDC_RADIO_LayoutAzerty, _tcscmp(buffer, _T("Qwerty")) == 0 ? IDC_RADIO_LayoutQwerty : _tcscmp(buffer, _T("Qwertz")) == 0 ? IDC_RADIO_LayoutQwertz : IDC_RADIO_LayoutAzerty);
@@ -255,6 +261,12 @@ void SetDialogLanguage(HWND hDlg)
 		langID = MAKELANGID(LANG_FRENCH, SUBLANG_FRENCH);
 		SetDiskLanguage(_T("FR"));
 	}
+	else if (IsDlgButtonChecked(hDlg, IDC_RADIO_Norwegian) == BST_CHECKED)
+	{
+		// Norwegian selected
+		langID = MAKELANGID(LANG_NORWEGIAN, SUBLANG_NORWEGIAN_BOKMAL);
+		SetDiskLanguage(_T("NO"));
+	}
 	else
 	{
 		SetDiskLanguage(_T("EN"));
@@ -269,6 +281,7 @@ void SetDialogLanguage(HWND hDlg)
 		{ IDC_LANGUAGE, IDS_Language },
 		{ IDC_RADIO_English, IDS_English },
 		{ IDC_RADIO_French, IDS_French },
+		{ IDC_RADIO_Norwegian, IDS_Norwegian },
 
 		{ IDC_DISPLAY, IDS_DISPLAY },
 		{ IDC_RADIO_WindowedMode, IDS_WindowedMode},

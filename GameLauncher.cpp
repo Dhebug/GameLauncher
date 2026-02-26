@@ -139,6 +139,7 @@ INT_PTR CALLBACK MessageHandler(HWND dialogHandle, UINT message, WPARAM wParam, 
 			{
 			case IDC_RADIO_English:
 			case IDC_RADIO_French:
+			case IDC_RADIO_Norwegian:
 				SetDialogLanguage(dialogHandle);
 				break;
 

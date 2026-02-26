@@ -8,6 +8,7 @@
 #define IDS_APP_TITLE                   103
 #define IDS_English                     104
 #define IDS_French                      105
+#define IDS_Norwegian                   147
 #define IDS_WindowedMode                106
 #define IDI_GAMELAUNCHER                107
 #define IDS_FullScreenMode              107
@@ -50,6 +51,7 @@
 #define IDC_RADIO_FullCrtFilter         1005
 #define IDC_RADIO_English               1007
 #define IDC_RADIO_French                1008
+#define IDC_RADIO_Norwegian             1009
 #define IDC_FILTERS                     1010
 #define IDC_LANGUAGE                    1011
 #define IDC_DISPLAY                     1012
