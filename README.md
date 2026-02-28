@@ -27,7 +27,9 @@ A quickly hacked launcher for the Steam version of Encounter
   - Reverted to the previous Oricutron
   - Removed the status bar checkbox
   - Extended the search for window handle
-
+- 1.0.0.10
+  - Minor change in the way versions of DSK files are fetched
+  - Added support for two new achievements as well as monkey king game score
 # Steam 
 The main game and the demo have different AppID:
 - Main Game
@@ -43,9 +45,21 @@ The main game and the demo have different AppID:
 - Select the game in Recent Apps
 - Go to Technical Tools -> Edit Steamworks Settings (https://partner.steamgames.com/apps/view/3319780)
 - Select SteamPipe -> Builds (https://partner.steamgames.com/apps/builds/3319780)
+- Select SteamPipe -> Builds (https://partner.steamgames.com/apps/builds/3476830) - Demo
 - Select the uploaded build and change the build menu to "default" and click on "Preview Build"
 - Eventually add a comment and click on Set Build Live Now
 - At that point the build is now on Steam and available to all the users
+
+## DLC
+Encounter - DIY Physical Edition
+ID = 4190940
+https://partner.steamgames.com/apps/landing/4190940
+
+	"4190940"
+	{
+		"name"	"Encounter - DIY Physical Edition (4190940) Depot"
+		"dlcappid"	"4190940"
+	}
 
 ## Creating new events
 - Go to "Community & Moderation" -> Post/Manage events (https://steamcommunity.com/games/3319780/partnerevents/)

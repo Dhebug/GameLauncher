@@ -6,9 +6,6 @@
 #define ID_QUIT                         2
 #define IDD_GAMELAUNCHER_DIALOG         102
 #define IDS_APP_TITLE                   103
-#define IDS_English                     104
-#define IDS_French                      105
-#define IDS_Norwegian                   147
 #define IDS_WindowedMode                106
 #define IDI_GAMELAUNCHER                107
 #define IDS_FullScreenMode              107

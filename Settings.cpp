@@ -279,9 +279,6 @@ void SetDialogLanguage(HWND hDlg)
 	} controls[] =
 	{
 		{ IDC_LANGUAGE, IDS_Language },
-		{ IDC_RADIO_English, IDS_English },
-		{ IDC_RADIO_French, IDS_French },
-		{ IDC_RADIO_Norwegian, IDS_Norwegian },
 
 		{ IDC_DISPLAY, IDS_DISPLAY },
 		{ IDC_RADIO_WindowedMode, IDS_WindowedMode},
