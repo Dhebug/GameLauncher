@@ -6,6 +6,68 @@
 #include "resource.h"
 
 
+// URL-encodes a wide string for use as a mailto: body parameter.
+// Converts to UTF-8 then percent-encodes all non-unreserved characters.
+static std::wstring UrlEncodeBody(const std::wstring& text)
+{
+	int utf8Len = WideCharToMultiByte(CP_UTF8, 0, text.c_str(), (int)text.size(), nullptr, 0, nullptr, nullptr);
+	std::string utf8(utf8Len, '\0');
+	WideCharToMultiByte(CP_UTF8, 0, text.c_str(), (int)text.size(), &utf8[0], utf8Len, nullptr, nullptr);
+
+	std::wstring result;
+	result.reserve(utf8Len * 3);
+	static const wchar_t hex[] = L"0123456789ABCDEF";
+	for (unsigned char c : utf8)
+	{
+		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') ||
+			c == '-' || c == '_' || c == '.' || c == '~')
+		{
+			result += (wchar_t)c;
+		}
+		else
+		{
+			result += L'%';
+			result += hex[(c >> 4) & 0xF];
+			result += hex[c & 0xF];
+		}
+	}
+	return result;
+}
+
+static std::wstring GetLauncherSettings()
+{
+	const wchar_t* lang    = IsDlgButtonChecked(g_DialogHandle, IDC_RADIO_French)         == BST_CHECKED ? L"French"
+	                       : IsDlgButtonChecked(g_DialogHandle, IDC_RADIO_Norwegian)       == BST_CHECKED ? L"Norwegian"
+	                       : L"English";
+	const wchar_t* layout  = IsDlgButtonChecked(g_DialogHandle, IDC_RADIO_LayoutAzerty)   == BST_CHECKED ? L"AZERTY"
+	                       : IsDlgButtonChecked(g_DialogHandle, IDC_RADIO_LayoutQwertz)   == BST_CHECKED ? L"QWERTZ"
+	                       : L"QWERTY";
+	const wchar_t* display = IsDlgButtonChecked(g_DialogHandle, IDC_RADIO_FullscreenMode) == BST_CHECKED ? L"Fullscreen" : L"Windowed";
+	const wchar_t* filter  = IsDlgButtonChecked(g_DialogHandle, IDC_RADIO_NoFilter)       == BST_CHECKED ? L"No filter"
+	                       : IsDlgButtonChecked(g_DialogHandle, IDC_RADIO_FullCrtFilter)  == BST_CHECKED ? L"Full CRT filter"
+	                       : L"CRT filter";
+	const wchar_t* music   = IsDlgButtonChecked(g_DialogHandle, IDC_CHECK_MUSIC)          == BST_CHECKED ? L"Music on"  : L"Music off";
+	const wchar_t* sounds  = IsDlgButtonChecked(g_DialogHandle, IDC_CHECK_SOUNDS)         == BST_CHECKED ? L"SFX on"   : L"SFX off";
+	wchar_t buf[256];
+	swprintf_s(buf, L"%s / %s / %s / %s / %s / %s", lang, layout, display, filter, music, sounds);
+	return buf;
+}
+
+std::wstring BuildSupportBody(std::wstring& body)
+{
+	body += L"OS: "                 + GetWindowsVersionInfo()                      + L"\r\n";
+	body += L"CPU: "                + GetCpuName()                                 + L"\r\n";
+	body += L"GPU: "                + GetGpuName()                                 + L"\r\n";
+	body += L"RAM: "                + GetMemoryInfo()                              + L"\r\n";
+	body += L"Screen: "             + GetScreenInfo()                              + L"\r\n";
+	body += L"Audio: "              + GetAudioDevices()                            + L"\r\n";
+	body += L"System language: "    + LocaleToEnglishName(GetSystemDefaultLCID()) + L"\r\n";
+	body += L"Keyboard languages: " + GetKeyboardLanguages()                       + L"\r\n";
+	body += L"Launcher settings: "  + GetLauncherSettings()                        + L"\r\n";
+	return body;
+}
+
+
 const TCHAR* GetHyperlink(Hyperlink linkType)
 {
 	static std::wstring link;
@@ -29,21 +91,31 @@ const TCHAR* GetHyperlink(Hyperlink linkType)
 		break;
 
 	case HyperlinkSupport:
-		if (IsDlgButtonChecked(g_DialogHandle, IDC_RADIO_French) == BST_CHECKED)
 		{
-			// French  (è = U+00E8 → UTF-8 %C3%A8)
-			link = L"mailto:encounter@defence-force.org?subject=Probl%C3%A8me%20avec%20Encounter&body=Mon%20probl%C3%A8me...";
-		}
-		else 
-		if (IsDlgButtonChecked(g_DialogHandle, IDC_RADIO_Norwegian) == BST_CHECKED)
-		{
-			// Norwegian
-			link = L"mailto:encounter_support@defence-force.org?subject=Problem%20med%20Encounter&body=Mitt%20problem...";
-		}
-		else
-		{
-			// English
-			link = L"mailto:encounter_support@defence-force.org?subject=Issue%20with%20Encounter&body=My%20issue...";
+			std::wstring body;
+			if (IsDlgButtonChecked(g_DialogHandle, IDC_RADIO_French) == BST_CHECKED)
+			{
+				// French  (è = U+00E8 → UTF-8 %C3%A8)
+				link  = L"mailto:encounter@defence-force.org?subject=Probl%C3%A8me%20avec%20Encounter&body=";
+				body += L"Description de mon probl\u00E8me...";
+				body += L"\r\n.\r\n.\r\n.\r\n.\r\n.\r\n\r\n\r\n--- Informations syst\u00E8me (pour le diagnostic, vous pouvez les supprimer si vous le souhaitez)\r\n";
+			}
+			else
+			if (IsDlgButtonChecked(g_DialogHandle, IDC_RADIO_Norwegian) == BST_CHECKED)
+			{
+				// Norwegian
+				link  = L"mailto:encounter_support@defence-force.org?subject=Problem%20med%20Encounter&body=";
+				body += L"Her er problemet mitt...";
+				body += L"\r\n.\r\n.\r\n.\r\n.\r\n.\r\n\r\n\r\n--- Systeminformasjon (for diagnostikkform\u00E5l, du kan slette dette hvis du vil)\r\n";
+			}
+			else
+			{
+				// English
+				link  = L"mailto:encounter_support@defence-force.org?subject=Issue%20with%20Encounter&body=";
+				body += L"Here is the issue I'm having...";
+				body += L"\r\n.\r\n.\r\n.\r\n.\r\n.\r\n\r\n\r\n--- System Information (for diagnostic help, you can delete it if you wish)\r\n";
+			}
+			link += UrlEncodeBody(BuildSupportBody(body));
 		}
 		break;
 	}

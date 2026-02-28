@@ -57,6 +57,19 @@ extern bool g_EmulatorWasLaunchedAndHasStopped; ///< To detect if we want to qui
 
 
 //
+// System Info
+//
+std::wstring GetWindowsVersionInfo();
+std::wstring GetCpuName();
+std::wstring GetGpuName();
+std::wstring GetAudioDevices();
+std::wstring GetMemoryInfo();
+std::wstring GetScreenInfo();
+std::wstring LocaleToEnglishName(LCID lcid);
+std::wstring GetKeyboardLanguages();
+
+
+//
 // Settings
 //
 const TCHAR* GetSaveFolderPath();            ///< C:\Users\<username>\AppData\Local\EncounterByDefenceForce

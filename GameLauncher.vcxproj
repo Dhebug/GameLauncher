@@ -159,6 +159,7 @@
     <ClCompile Include="EmulatorMonitor.cpp" />
     <ClCompile Include="GameLauncher.cpp" />
     <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="SystemInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameLauncher.rc" />
