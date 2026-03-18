@@ -30,6 +30,11 @@ A quickly hacked launcher for the Steam version of Encounter
 - 1.0.0.10
   - Minor change in the way versions of DSK files are fetched
   - Added support for two new achievements as well as monkey king game score
+- 1.1.0.0
+  - Added support for Norwegian language
+  - Added system information to the support emails
+
+ 
 # Steam 
 The main game and the demo have different AppID:
 - Main Game

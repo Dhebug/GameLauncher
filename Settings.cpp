@@ -68,6 +68,13 @@ std::wstring BuildSupportBody(std::wstring& body)
 }
 
 
+static const TCHAR* GetWebsiteLanguageParam()
+{
+	if (IsDlgButtonChecked(g_DialogHandle, IDC_RADIO_French) == BST_CHECKED)    return L"&language=fr";
+	if (IsDlgButtonChecked(g_DialogHandle, IDC_RADIO_Norwegian) == BST_CHECKED) return L"&language=no";
+	return L"";
+}
+
 const TCHAR* GetHyperlink(Hyperlink linkType)
 {
 	static std::wstring link;
@@ -76,18 +83,12 @@ const TCHAR* GetHyperlink(Hyperlink linkType)
 	{
 	case HyperlinkGamePage:
 		link = L"https://www.defence-force.org/index.php?page=games&game=encounter";
-		if (IsDlgButtonChecked(g_DialogHandle, IDC_RADIO_French) == BST_CHECKED)
-		{
-			link.append(L"&language=fr");
-		}
+		link.append(GetWebsiteLanguageParam());
 		break;
 
 	case HyperlinkManual:
 		link = L"https://www.defence-force.org/index.php?page=games&game=encounter&type=manual";
-		if (IsDlgButtonChecked(g_DialogHandle, IDC_RADIO_French) == BST_CHECKED)
-		{
-			link.append(L"&language=fr");
-		}
+		link.append(GetWebsiteLanguageParam());
 		break;
 
 	case HyperlinkSupport:
